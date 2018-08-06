@@ -17,7 +17,7 @@ import java.io.IOException;
 @WebServlet( urlPatterns = "/product/*")
 public class GetProductByNameServlet extends HttpServlet {
 
-    @EJB(beanName = "ProductRepositoryInFile")
+    @EJB(beanName = "ProductRepositoryInDatabase")
     private ProductRepository repo;
 
     public GetProductByNameServlet() {}

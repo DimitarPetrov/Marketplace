@@ -3,6 +3,7 @@ package data;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Objects;
 
 public class Product {
@@ -12,7 +13,7 @@ public class Product {
     private double price;
     private String expiryDate;
 
-    public Product(String name, double weight, String brand, double price, String expiryDate){
+    private Product(String name, double weight, String brand, double price, String expiryDate){
         this.name = name;
         this.weight = weight;
         this.brand = brand;
@@ -20,21 +21,21 @@ public class Product {
         this.expiryDate = expiryDate;
     }
 
-    /*public data.Product createProduct(String name, double weight, String brand, double price, String expiryDate) throws InvalidPropertiesFormatException {
-        if(weight < 0 || price < 0 || !isValidDateFormat(expiryDate)){
+    public static Product createProduct(String name, double weight, String brand, double price, String expiryDate) throws InvalidPropertiesFormatException {
+        if(weight < 0 || price < 0 || !isValidDateFormat(expiryDate)|| name.length() > 60 || brand.length() > 60){
             throw new InvalidPropertiesFormatException("Incorrect arguments");
         }
-        return new data.Product(name,weight,brand,price,expiryDate);
-    }*/
+        return new Product(name,weight,brand,price,expiryDate);
+    }
 
     public boolean isValidObject() {
-        if(weight < 0 || price < 0 || !isValidDateFormat(expiryDate)){
+        if(weight < 0 || price < 0 || !isValidDateFormat(expiryDate) || name.length() > 60 || brand.length() > 60){
             return false;
         }
         return true;
     }
 
-    private boolean isValidDateFormat(String date){
+    private static boolean isValidDateFormat(String date){
         try {
             LocalDate.parse(date, DateTimeFormatter.ofPattern("d/MM/yyyy"));
             return true;
@@ -45,6 +46,22 @@ public class Product {
 
     public String getName() {
         return name;
+    }
+
+    public double getWeight() {
+        return  weight;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
     }
 
     @Override

@@ -5,6 +5,7 @@ import data.Product;
 import exceptions.AlreadyDefinedProductException;
 import exceptions.NoSuchProductException;
 
+import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import java.io.*;
 import java.util.Collection;
@@ -24,7 +25,7 @@ public class ProductRepositoryInFile implements ProductRepository {
 
     public ProductRepositoryInFile() {
         try {
-            printWriter = new PrintWriter("repositoryFile");
+            printWriter = new PrintWriter(new FileOutputStream(new File("repositoryFile"), true));
             fis = new FileInputStream("repositoryFile");
             setUpReader();
             entities = new ConcurrentHashMap<>();
@@ -33,6 +34,12 @@ public class ProductRepositoryInFile implements ProductRepository {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @PreDestroy
+    public void preDestroy() throws IOException {
+        printWriter.close();
+        bufferedReader.close();
     }
 
     private void truncate() throws IOException {

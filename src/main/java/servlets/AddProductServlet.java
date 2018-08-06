@@ -19,7 +19,7 @@ import java.util.Collection;
 @WebServlet(urlPatterns = "/products")
 public class AddProductServlet extends HttpServlet {
 
-    @EJB(beanName = "ProductRepositoryInFile")
+    @EJB(beanName = "ProductRepositoryInDatabase")
     private ProductRepository repo;
 
     public AddProductServlet() {}
