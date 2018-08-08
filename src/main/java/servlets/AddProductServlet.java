@@ -1,7 +1,6 @@
 package servlets;
 
 import javax.ejb.EJB;
-import javax.inject.Inject;
 import com.google.gson.Gson;
 import data.Product;
 import exceptions.AlreadyDefinedProductException;

@@ -9,7 +9,6 @@ import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import java.sql.*;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 
 @Singleton

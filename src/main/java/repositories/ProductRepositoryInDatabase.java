@@ -3,7 +3,6 @@ package repositories;
 import data.Product;
 import exceptions.AlreadyDefinedProductException;
 import exceptions.NoSuchProductException;
-import org.postgresql.util.PSQLState;
 
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
