@@ -35,8 +35,8 @@ public class LogInServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String attribute = (String)session.getAttribute("authenticated");
-        if(attribute != null && attribute.equals("true")){
+        User attribute = (User)session.getAttribute("authenticated");
+        if(attribute != null){
            resp.setStatus(200);
         } else {
             String credentials = req.getHeader("Authorization").split(" ")[1];
@@ -46,10 +46,12 @@ public class LogInServlet extends HttpServlet {
             String password = encrypt(plainTextCredentials.split(":")[1]);
             try {
                 User user = repo.getUserByName(username);
-                if(user.getPassword().equals(password)){
-                    session.setAttribute("authenticated", "true");
-                    session.setMaxInactiveInterval(10*60);
+                if(user.getPassword().equals(password)) {
+                    session.setAttribute("authenticated", user);
+                    session.setMaxInactiveInterval(10 * 60);
                     resp.setStatus(200);
+                } else {
+                    resp.setStatus(400);
                 }
             } catch (NoSuchUserException e){
                 resp.setStatus(400);

@@ -1,5 +1,7 @@
 package filters;
 
+import data.User;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,8 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpSession session = request.getSession(false);
-        if(session != null && session.getAttribute("authenticated").equals("true")){
+        User user = (User)session.getAttribute("authenticated");
+        if(session != null && user != null){
             //System.out.println("Authenticated!");
             chain.doFilter(req, resp);
         } else {
