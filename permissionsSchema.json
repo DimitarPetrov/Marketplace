@@ -1,0 +1,21 @@
+    [   {
+            "path":"/products",
+            "method":"GET",
+            "req_permissions":["get_product"]
+        },
+        {
+            "path":"/products",
+            "method":"POST",
+            "req_permissions":["add_product"]
+        },
+        {
+            "path":"/product/*",
+            "method":"GET",
+            "req_permissions":["get_product"]
+        },
+        {
+            "path":"/product/*",
+            "method":"DELETE",
+            "req_permissions":["delete_product"]
+        }
+    ]

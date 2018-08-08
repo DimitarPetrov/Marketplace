@@ -19,14 +19,12 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpSession session = request.getSession(false);
-        User user = (User)session.getAttribute("authenticated");
-        if(session != null && user != null){
-            //System.out.println("Authenticated!");
+        User user;
+        if(session != null && (user = (User)session.getAttribute("authenticated")) != null){
             chain.doFilter(req, resp);
         } else {
             HttpServletResponse response = (HttpServletResponse) resp;
             response.setStatus(401);
-            //System.out.println("UNauthenticated!");
         }
     }
 

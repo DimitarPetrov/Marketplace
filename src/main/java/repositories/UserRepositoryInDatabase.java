@@ -7,11 +7,9 @@ import exceptions.UserAlreadyExistsException;
 
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.Base64;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 
 @Singleton

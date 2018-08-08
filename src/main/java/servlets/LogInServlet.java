@@ -5,6 +5,7 @@ import data.Product;
 import data.User;
 import exceptions.NoSuchUserException;
 import repositories.UserRepository;
+import util.Utilities;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -43,7 +44,7 @@ public class LogInServlet extends HttpServlet {
             byte[] bytes = Base64.getDecoder().decode(credentials);
             String plainTextCredentials = new String(bytes);
             String username = plainTextCredentials.split(":")[0];
-            String password = encrypt(plainTextCredentials.split(":")[1]);
+            String password = Utilities.encrypt(plainTextCredentials.split(":")[1]);
             try {
                 User user = repo.getUserByName(username);
                 if(user.getPassword().equals(password)) {
@@ -58,15 +59,5 @@ public class LogInServlet extends HttpServlet {
             }
         }
 
-    }
-
-    public static String encrypt(String pass){
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = messageDigest.digest(pass.getBytes());
-            return Base64.getEncoder().encodeToString(hash);
-        } catch (NoSuchAlgorithmException e){
-            throw new RuntimeException(e);
-        }
     }
 }
