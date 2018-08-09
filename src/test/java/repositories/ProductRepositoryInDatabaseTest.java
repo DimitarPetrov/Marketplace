@@ -5,6 +5,6 @@ class ProductRepositoryInDatabaseTest extends RepositoryTestBase<ProductReposito
 
     @Override
     protected ProductRepositoryInDatabase createInstance() {
-        return new ProductRepositoryInDatabase();
+        return new ProductRepositoryInDatabase("localhost", "4321");
     }
 }

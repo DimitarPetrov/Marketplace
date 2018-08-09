@@ -101,7 +101,7 @@ public class AddProductServletTest extends Mockito {
 
         verify(repo, times(1)).getAllProducts();
         verify(response, times(1)).getWriter();
-        assertEquals(validProduct, new Gson().fromJson(stringWriter.toString(), Product.class));
+        assertEquals(validProduct, new Gson().fromJson(stringWriter.toString(), Product[].class)[0]);
         stringWriter.close();
         printWriter.close();
     }
