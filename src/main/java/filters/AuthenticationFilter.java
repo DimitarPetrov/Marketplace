@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(filterName = "AuthenticationFilter",
-        urlPatterns = {"/products", "/product/*"})
+        urlPatterns = {"/products", "/product/*", "/permissions/*"})
 public class AuthenticationFilter implements Filter {
     public void destroy() {
 
@@ -25,6 +25,7 @@ public class AuthenticationFilter implements Filter {
         } else {
             HttpServletResponse response = (HttpServletResponse) resp;
             response.setStatus(401);
+            response.getWriter().write("{\"error\":\"Unauthenticated\"}");
         }
     }
 

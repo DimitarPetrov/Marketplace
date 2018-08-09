@@ -4,7 +4,8 @@ public enum Permissions {
     GET_PRODUCT("get_product"),
     ADD_PRODUCT("add_product"),
     DELETE_PRODUCT("delete_product"),
-    GIVE_PERMISSIONS("give_permissions");
+    GIVE_PERMISSIONS("give_permissions"),
+    TAKE_PERMISSIONS("take_permissions");
 
     private final String name;
 
@@ -18,6 +19,7 @@ public enum Permissions {
             case "add_product": return ADD_PRODUCT;
             case "delete_product": return DELETE_PRODUCT;
             case "give_permissions": return GIVE_PERMISSIONS;
+            case "take_permissions": return TAKE_PERMISSIONS;
             default: throw new IllegalArgumentException();
         }
     }

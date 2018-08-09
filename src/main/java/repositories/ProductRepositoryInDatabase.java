@@ -31,6 +31,17 @@ public class ProductRepositoryInDatabase implements ProductRepository {
 
     }
 
+    public ProductRepositoryInDatabase(String host, String port){
+        try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/postgres", "postgres", "postgres");
+
+        } catch (ClassNotFoundException | SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
     @PreDestroy
     public void preDestroy() throws SQLException {
         connection.close();

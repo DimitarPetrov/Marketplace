@@ -32,6 +32,7 @@ public class GetProductByNameServlet extends HttpServlet {
             Product product = repo.getProductByName(productName);
             Gson gson = new Gson();
             String productInJSON = gson.toJson(product);
+            resp.setHeader("Content-Type", "application/json");
             resp.getWriter().write(productInJSON);
         } catch (NoSuchProductException e){
             resp.setStatus(404);
