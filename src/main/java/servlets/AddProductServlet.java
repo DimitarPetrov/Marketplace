@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.Iterator;
 
 @WebServlet(urlPatterns = "/products")
 public class AddProductServlet extends HttpServlet {
@@ -55,11 +56,8 @@ public class AddProductServlet extends HttpServlet {
         Gson gson = new Gson();
         String productInJSON = null;
         PrintWriter pw = resp.getWriter();
-        for(Product product : products){
-            productInJSON = gson.toJson(product);
-            pw.write(productInJSON);
-            pw.write("\n");
-        }
+        resp.setHeader("Content-Type", "application/json");
+        pw.write(gson.toJson(products));
     }
 }
 

@@ -23,6 +23,12 @@ public class RegisterServlet extends HttpServlet {
     @EJB(beanName = "UserRepositoryInDatabase")
     private UserRepository repo;
 
+    public RegisterServlet(){}
+
+    public RegisterServlet(UserRepository repo){
+        this.repo = repo;
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         byte[] bytes = req.getInputStream().readAllBytes();
@@ -34,6 +40,7 @@ public class RegisterServlet extends HttpServlet {
         String REpassword = jsonObject.get("repeat_password").getAsString();
         if(!password.equals(REpassword)){
             resp.setStatus(400);
+            return;
         }
         User newUser = new User(username, Utilities.encrypt(password));
         newUser.addPermission(Permissions.GET_PRODUCT);

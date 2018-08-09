@@ -9,13 +9,23 @@
             "req_permissions":["add_product"]
         },
         {
-            "path":"/product/*",
+            "path":"/product/.*",
             "method":"GET",
             "req_permissions":["get_product"]
         },
         {
-            "path":"/product/*",
+            "path":"/product/.*",
             "method":"DELETE",
             "req_permissions":["delete_product"]
+        },
+        {
+            "path":"/permissions/.*",
+            "method":"PUT",
+            "req_permissions":["give_permissions"]
+        },
+        {
+            "path":"/permissions/.*",
+            "method":"DELETE",
+            "req_permissions":["take_permissions"]
         }
     ]
