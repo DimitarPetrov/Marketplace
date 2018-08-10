@@ -59,7 +59,7 @@ public class AuthorisationFilter implements Filter {
 
     private void parseRequirementsFromConfigFile() {
         //TODO: Why tomEE can't find file! Manually pasted in it's directory!
-        try (BufferedReader br = new BufferedReader(new FileReader("permissionsSchema.json"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("catalina.base") + "/bin/permissionsSchema.json"))) {
             JsonParser parser = new JsonParser();
             JsonArray array = parser.parse(br).getAsJsonArray();
             Iterator<JsonElement> it = array.iterator();

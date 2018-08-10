@@ -1,8 +1,10 @@
 package repositories;
 
+import com.google.gson.JsonObject;
 import data.Product;
 import exceptions.AlreadyDefinedProductException;
 import exceptions.NoSuchProductException;
+import util.Utilities;
 
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
@@ -20,11 +22,17 @@ public class ProductRepositoryInDatabase implements ProductRepository {
 
     public ProductRepositoryInDatabase(){
         try {
-            String host = System.getenv("DATABASE_HOST");
-            String port = System.getenv("DATABASE_PORT");
+            String env = System.getenv("VCAP_SERVICES");
             Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/postgres", "postgres", "postgres");
-
+            if(env != null){
+                JsonObject object = Utilities.parseCloudFoundryDatabaseCredentials(env);
+                connection = DriverManager.getConnection("jdbc:postgresql://" + object.get("hostname").getAsString() + ":" + object.get("port").getAsString() + "/" + object.get("dbname").getAsString() + "?sslmode=disable",
+                        object.get("username").getAsString(), object.get("password").getAsString());
+            } else {
+                String host = System.getenv("DATABASE_HOST");
+                String port = System.getenv("DATABASE_PORT");
+                connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/postgres?sslmode=disable", "postgres", "postgres");
+            }
         } catch (ClassNotFoundException | SQLException e){
             throw new RuntimeException(e);
         }
