@@ -1,27 +1,17 @@
 package repositories;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import data.Permissions;
-import data.Product;
-import data.Requirement;
 import data.User;
 import exceptions.AlreadyAcquiredPermissionException;
 import exceptions.NoSuchUserException;
 import exceptions.NotAcquiredPermissionException;
 import exceptions.UserAlreadyExistsException;
+import util.Utilities;
 
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import data.Permissions;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 
@@ -36,12 +26,18 @@ public class UserRepositoryInDatabase implements UserRepository {
 
     public UserRepositoryInDatabase() {
         try {
-            String host = System.getenv("DATABASE_HOST");
-            String port = System.getenv("DATABASE_PORT");
+            String env = System.getenv("VCAP_SERVICES");
             Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/postgres", "postgres", "postgres");
-
-        } catch (ClassNotFoundException | SQLException e) {
+            if(env != null){
+                JsonObject object = Utilities.parseCloudFoundryDatabaseCredentials(env);
+                connection = DriverManager.getConnection("jdbc:postgresql://" + object.get("hostname").getAsString() + ":" + object.get("port").getAsString() + "/" + object.get("dbname").getAsString() + "?sslmode=disable",
+                        object.get("username").getAsString(), object.get("password").getAsString());
+            } else {
+                String host = System.getenv("DATABASE_HOST");
+                String port = System.getenv("DATABASE_PORT");
+                connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/postgres?sslmode=disable", "postgres", "postgres");
+            }
+        } catch (ClassNotFoundException | SQLException e){
             throw new RuntimeException(e);
         }
     }
@@ -49,7 +45,7 @@ public class UserRepositoryInDatabase implements UserRepository {
     public UserRepositoryInDatabase(String host, String port) {
         try {
             Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/postgres", "postgres", "postgres");
+            connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/postgres?sslmode=disable", "postgres", "postgres");
 
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
